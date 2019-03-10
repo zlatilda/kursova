@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block body %}
+
+<div class="container" id="usr">
+	<br>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-3 col-sm-12">
+				<img id="original-Img" style="display: none;"/>
+				<img id="upload-Preview" src="france_x_reader_i_m_not_on_drugs_songfic_by_legoninjagogirl-d8phbqp.jpg" />
+				<input type="button" id="id" value="Upload File"  onclick="document.getElementById('upload-Image').click();" 
+				style="background-color: #4CAF50; cursor: pointer; color: white; text-decoration: none; padding: 3%; width:100%; border: none;"/>
+				<input id="upload-Image" type="file" onchange="loadImageFile();" value="select image" style="display:none;" />
+			</div>
+			<div class="col-md-8 col-sm-12">
+				<div class="row">
+					<div class="col-11">
+						<label id="login" style="font-size:140%;"><b>{{ user.username}}</b></label>
+					</div>
+					<div class="col-1" id="ico_img" ><a href="#" style="opacity: 0.7;"><img src="settings.png" style="height: 25px;"></a></div>
+				</div>
+				<div class="row">
+					<div class="col-12">Country:<b>{{ profile.country }}</b></div>
+					<div class="col-12">City:<b>{{ profile.city }}</b></div>
+					<div class="col-12">Sex:<b>{{ profile.sex }}</b></div>
+					<div class="col-12">Name:<b>{{ user.first_name }}</b></div>
+					<div class="col-12">Surname:<b>{{ user.last_name }}</b></div>
+					<div class="col-12"><b>BIO:</b></div>
+
+				</div>
+			</div>
+			<br>
+			<div class="col-md-3 col-xs-12">
+				<h5>Followers</h5>
+				<div class="list-group" id="user_content">
+					<a href="#" class="list-group-item"  id="follower"><img src="france_x_reader_i_m_not_on_drugs_songfic_by_legoninjagogirl-d8phbqp.jpg"  style="height:40px;"/>First item</a>
+					<a href="#" class="list-group-item"  id="follower"><img src="france_x_reader_i_m_not_on_drugs_songfic_by_legoninjagogirl-d8phbqp.jpg"  style="height:40px;"/>Second item</a>
+					<a href="#" class="list-group-item"  id="follower"><img src="france_x_reader_i_m_not_on_drugs_songfic_by_legoninjagogirl-d8phbqp.jpg"  style="height:40px;"/>Third item</a>				
+				</div>
+			</div>
+			<div class="col-md-8 col-xs-12">
+				<h5>My Articles</h5>
+				<div class="list-group" id="user_content">
+					<a href="#" class="list-group-item">First item</a>
+					<a href="#" class="list-group-item">Second item</a>
+					<a href="#" class="list-group-item">Third item</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+    <script>
+
+		var fileReader = new FileReader();
+var filterType = /^(?:image\/bmp|image\/cis\-cod|image\/gif|image\/ief|image\/jpeg|image\/jpeg|image\/jpeg|image\/pipeg|image\/png|image\/svg\+xml|image\/tiff|image\/x\-cmu\-raster|image\/x\-cmx|image\/x\-icon|image\/x\-portable\-anymap|image\/x\-portable\-bitmap|image\/x\-portable\-graymap|image\/x\-portable\-pixmap|image\/x\-rgb|image\/x\-xbitmap|image\/x\-xpixmap|image\/x\-xwindowdump)$/i;
+
+fileReader.onload = function (event) {
+  var image = new Image();
+
+  image.onload=function(){
+      document.getElementById("original-Img").src=image.src;
+      var canvas=document.createElement("canvas");
+      var context=canvas.getContext("2d");
+	  if(image.width <=image.height)
+	  {
+      canvas.width=image.width;
+      canvas.height=canvas.width;
+
+	  context.drawImage(image,
+          0,
+          0,
+          image.width,
+          image.width,
+          0,
+          0,
+          canvas.width,
+          canvas.height
+      );
+	  }
+	  if(image.width > image.height)
+	  {
+      canvas.width = image.height;
+      canvas.height = image.height;
+
+      context.drawImage(image,
+          0 + canvas.width/4,
+          0,
+          image.height,
+          image.height,
+          0,
+          0,
+          canvas.width,
+          canvas.height
+      );
+      }
+      document.getElementById("upload-Preview").src = canvas.toDataURL();
+  }
+  image.src=event.target.result;
+};
+
+var loadImageFile = function () {
+    var uploadImage = document.getElementById("upload-Image");
+
+    //check and retuns the length of uploded file.
+    if (uploadImage.files.length === 0) {
+        return;
+    }
+
+    //Is Used for validate a valid file.
+    var uploadFile = document.getElementById("upload-Image").files[0];
+    if (!filterType.test(uploadFile.type)) {
+        alert("Please select a valid image.");
+        return;
+    }
+
+    fileReader.readAsDataURL(uploadFile);
+}
+ document.getElementById("usr").onload = loadImageFile();
+    </script>
+{% endblock %}

@@ -1,0 +1,229 @@
+{% extends 'base.html' %}
+{% block title %}<title>Registration</title>{% endblock %}
+{% block body %}
+  <div id= "reg" class="container">
+  <form method="POST" enctype=multipart/form-data" autocomplete="off">
+  <h2 style = "margin-top: 2%; margin-bottom: 2% ">Sign up</h2>
+    {% csrf_token %}
+    {% for field in form %}
+      <div class="form-group">
+        <h5>{{ field.label_tag }}</h5>
+      <p style = "color: red; font-size: 13px;" id="{{ field.id_for_label}}_par"></p>
+          {{ field }}<br>
+        {% if field.help_text %}
+          <small style="color: #131317">{{ field.help_text }}</small>
+        {% endif %}
+        {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
+      </div>
+    {% endfor %}
+  {% for field in profile %}
+              <h5>{{ field.label_tag }}</h5>
+      <p style = "color: red; font-size: 13px;" id="{{ field.id_for_label}}_par"></p>
+          {{ field }}<br>
+        {% if field.help_text %}
+          <small style="color: #131317">{{ field.help_text }}</small>
+        {% endif %}
+  {% endfor %}
+    <input value="Sign Up" id="buttonS" class="btn btn-default" type="submit" onclick="noNulls()" style = "margin-top: 2%; margin-bottom: 5%;">
+
+  </div>
+    <script type="text/javascript" language="javascript">
+    var pass;
+	var ass_pass;
+	function checkValue(ele)
+  {
+    var username_par = document.getElementById("username_par");
+	var email_par = document.getElementById("email_par");
+	var password_par = document.getElementById("password_par");
+	var assert_password_par = document.getElementById("assert_password_par");
+	var name_par = document.getElementById("name_par");
+	var surname_par = document.getElementById("surname_par");
+
+	if(ele.id == "username")
+	{
+      if(ele.value=="")
+      {
+        username_par.innerHTML = "Please Enter Your username!";
+        return false;
+      }
+       if(ele.value.length < 3)
+       {
+           username_par.innerHTML = "Username must contain >= 3 letters.";
+           return false;
+       }
+      var t = /[ !@#$%^&*()'-+\=\[\]{};:"\\|,.<>\/?]/;
+      if(t.test(ele.value))
+      {
+        username_par.innerHTML = "Username can contain only underscore and no other symbol!";
+        return false;
+      }
+      else {username_par.innerHTML =""; document.getElementById("buttonS").disabled = false; return true;}
+	}
+	if(ele.id == "email")
+	{
+		if(ele.value == "")
+			{
+				email_par.innerHTML = "Field 'email' is empty!";
+				return false;
+			}
+			var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		if(re.test(String(ele.value).toLowerCase()) == false)
+		{
+			email_par.innerHTML = "not valid e-mail";
+			return false;
+		}
+		else {email_par.innerHTML =""; document.getElementById("buttonS").disabled = false; return true;}
+	}
+    if(ele.id == "password")
+	{
+		pass = ele.value;
+		if(ele.value=="")
+			{
+				password_par.innerHTML = "Please enter your password!";
+				return false;
+			}
+			var letter = /[a-zA-Z]/;
+			var number = /[0-9]/;
+			if (ele.value.length < 4 || !letter.test(ele.value) || !number.test(ele.value))
+			{
+				password_par.innerHTML = "Password must be >= 4 symbols, must contain letters and numbers only!";
+				return false;
+			}
+			else {password_par.innerHTML =""; document.getElementById("buttonS").disabled = false; return true;}
+
+	}
+	if(ele.id == "assert_password")
+	{
+		ass_pass = ele.value;
+		if(ele.value=="")
+			{
+				//alert("Please confirm password");
+				assert_password_par.innerHTML = "Please confirm password!";
+				return false;
+			}
+			if(pass != ass_pass)
+			{
+
+				assert_password_par.innerHTML = "Can not confirm password!";
+				return false;
+			}
+			else {assert_password_par.innerHTML =""; document.getElementById("buttonS").disabled = false; return true;}
+	}
+	if(ele.id == "name")
+	{
+		    if(ele.value == "")
+			{
+				name_par.innerHTML = "This field is empty!";
+				return false;
+			}
+		    if(ele.value.length < 3)
+            {
+                name_par.innerHTML = "Name must contain >= 3 letters.";
+				return false;
+            }
+			if(ele.value[0] == ele.value[0].toLowerCase())
+			{
+				name_par.innerHTML = "First letter is small or starts with symbol!";
+				return false;
+			}
+			if(/\d/.test(ele.value))
+			{
+				name_par.innerHTML = "Name can not contain numbers!";
+				return false;
+			}
+			var format = /[ !@#$%^&*()_+\=\[\]{};:"\\|,.<>\/?]/;
+			if(format.test(ele.value))
+			{
+				name_par.innerHTML = "Name can not contain symbols!";
+				return false;
+			}
+			if(ele.value.lastIndexOf("-") == ele.value.length-1 || ele.value.lastIndexOf("'") == ele.value.length-1)
+			{
+				name_par.innerHTML = "Special symbols must be followed by letters!";
+				return false;
+			}
+			if(ele.value.includes("-") && ele.value[ele.value.lastIndexOf("-")+1] == ele.value[ele.value.lastIndexOf("-")+1].toLowerCase())
+			{
+				name_par.innerHTML = "Special symbol '-' can be followed by capital letter only!";
+				return false;
+			}
+			else {name_par.innerHTML =""; document.getElementById("buttonS").disabled = false; return true;}
+	}
+	if(ele.id == "surname")
+	{
+		    if(ele.value == "")
+			{
+				surname_par.innerHTML = "This field is empty!";
+				return false;
+			}
+		    if(ele.value.length < 3)
+            {
+                surname_par.innerHTML = "Surname must contain >= 3 letters.";
+				return false;
+            }
+			if(ele.value[0] == ele.value[0].toLowerCase())
+			{
+				surname_par.innerHTML = "First letter is small or starts with symbol!";
+				return false;
+			}
+			if(/\d/.test(ele.value))
+			{
+				surname_par.innerHTML = "Name can not contain numbers!";
+				return false;
+			}
+			var format = /[ !@#$%^&*()_+\=\[\]{};:"\\|,.<>\/?]/;
+			if(format.test(ele.value))
+			{
+				surname_par.innerHTML = "Name can not contain symbols!";
+				return false;
+			}
+			if(ele.value.lastIndexOf("-") == ele.value.length-1 || ele.value.lastIndexOf("'") == ele.value.length-1)
+			{
+				surname_par.innerHTML = "Special symbols must be followed by letters!";
+				return false;
+			}
+			if(ele.value.includes("-") && ele.value[ele.value.lastIndexOf("-")+1] == ele.value[ele.value.lastIndexOf("-")+1].toLowerCase())
+			{
+				surname_par.innerHTML = "Special symbol '-' can be followed by capital letter only!";
+				return false;
+			}
+			else {surname_par.innerHTML =""; document.getElementById("buttonS").disabled = false; return true;}
+	}
+  }
+
+  let node = document.getElementById("username");
+  node.addEventListener("blur", function () { checkValue(node)} , false);
+  let node1 = document.getElementById("email");
+  node1.addEventListener("blur", function () { checkValue(node1)} , false);
+  let node2 = document.getElementById("password");
+  node2.addEventListener("blur", function () { checkValue(node2)} , false);
+  let node3 = document.getElementById("assert_password");
+  node3.addEventListener("blur", function () { checkValue(node3)} , false);
+  let node4 = document.getElementById("name");
+  node4.addEventListener("blur", function () { checkValue(node4)} , false);
+  let node5 = document.getElementById("surname");
+  node5.addEventListener("blur", function () { checkValue(node5)} , false);
+
+
+  $( document ).ready(function() {
+    document.getElementById("buttonS").disabled = true;
+});
+
+  function noNulls()
+  {
+
+      if(checkValue(node) == false){document.getElementById("buttonS").disabled = true; return false;}
+      else if(checkValue(node1) == false){document.getElementById("buttonS").disabled = true; return false;}
+      else if(checkValue(node2) == false){document.getElementById("buttonS").disabled = true; return false;}
+      else if(checkValue(node3) == false){document.getElementById("buttonS").disabled = true; return false;}
+      else if(checkValue(node4) == false){document.getElementById("buttonS").disabled = true; return false;}
+      else if(checkValue(node5) == false){document.getElementById("buttonS").disabled = true; return false;}
+      else {
+          return true;
+      }
+  }
+
+	</script>
+{% endblock %}

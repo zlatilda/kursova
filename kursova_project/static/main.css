@@ -1,0 +1,60 @@
+#status, #ppl_voted, #date
+{
+    font-size: 11px;
+}
+#comment
+{
+    font-size: 11px;
+    height: 15px;
+}
+
+#ico_img
+{
+	width: auto;
+    height: 100%;
+	opacity: 0.7;
+}
+
+html{
+    min-height: 100%;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+body
+{
+    width: 100%;
+    max-width: 100%;
+}
+
+#lenta{padding-right: 0.5%;}
+
+#hot{padding-left:0.5%;}
+
+#content{padding-right: 10%; padding-left:10%;}
+@media only screen and (max-width: 1000px) {
+    #content{padding-left: 0%; padding-right: 0%;}
+    #lenta{padding-right: 2.2%;}
+    #hot{padding-left:2.1%;}
+}
+
+#upload-Preview
+	{
+		max-width: 100%;
+		max-height: 100%;
+	}
+	#follower {
+    padding: 3px 3px;
+	}
+	#user_content{
+    max-height: 50vh;
+    margin-bottom: 10px;
+    overflow:scroll;
+    -webkit-overflow-scrolling: touch;
+	overflow-y: auto;
+	overflow-x: hidden;
+	}
+	#bio{max-height: 13vh; overflow-y: auto;overflow-x: hidden;}
+
+    #comments{width: 50%;margin: 0 auto; padding-left: 10%; padding-right: 10%;}
