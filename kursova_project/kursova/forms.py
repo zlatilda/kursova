@@ -47,6 +47,14 @@ class RegForm(forms.ModelForm):
             'last_name': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
+    def save(self, commit=True):
+        user = User.objects.create_user(username=self.cleaned_data['username'], password=self.cleaned_data['password1'])
+        user.first_name = self.cleaned_data['first_name']
+        user.last_name = self.cleaned_data['last_name']
+        user.email = self.cleaned_data['email']
+        user.save()
+        return user
+
 
 class CommentForm(forms.ModelForm):
     class Meta:

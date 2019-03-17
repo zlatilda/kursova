@@ -58,9 +58,8 @@ def signup(request):
         profile_form = ProfileForm(request.POST, request.FILES)
         if form.is_valid() and profile_form.is_valid():
             user = form.save()
+            profile_form.user = user
             profile_form.save()
-
-
             login(request, user)
             return redirect('kursova:index')
     else:
