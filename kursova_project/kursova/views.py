@@ -53,24 +53,32 @@ def search(request):
 
 
 def signup(request):
-    if request.method == 'POST' :
+    if request.method == 'POST':
         form = RegForm(request.POST)
-        profile_form = ProfileForm(request.POST, request.FILES)
-        if form.is_valid() and profile_form.is_valid():
+        if form.is_valid():
             user = form.save()
-            profile_form.user = user
-            profile_form.save()
             login(request, user)
             return redirect('kursova:index')
     else:
         form = RegForm()
-        profile_form = ProfileForm()
-    return render(request, 'register.html', {'form': form,
-                                                          'profile': profile_form })
+    return render(request, 'register.html', {'form': form})
+
+
+def create_profile(request):
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.user = request.user
+            form.save()
+
+            return redirect('kursova:index')
+    else:
+        form = ProfileForm()
+        return render(request, 'register.html', {'profile': form})
 
 
 def get_user_profile(request, username):
-    template= 'user_page.html'
+    template = 'user_page.html'
     user = User.objects.get(username=username)
     votes = Vote.objects.filter(user=user)
     profile = UserProfile.objects.get(user=user)

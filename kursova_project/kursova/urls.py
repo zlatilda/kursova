@@ -9,4 +9,5 @@ urlpatterns = [
     url(r'post/(?P<slug>[-\w]+)/', post_detail, name='post'),
     url(r'result/', search, name="search"),
     url(r'user/(?P<username>[-\w]+)/', get_user_profile, name="usr_pg"),
+    url(r'registration/create-profile',create_profile, name='create_profile'),
 ]

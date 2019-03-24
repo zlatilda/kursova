@@ -21,5 +21,6 @@ urlpatterns = [
     url(r'', include('kursova.urls')),
     url(r'accounts/', include('django.contrib.auth.urls')),
     url(r'', include('poll.urls')),
+
 ]
 

@@ -5,6 +5,7 @@
 <script type="text/javascript">
 var vote_url = '{% url "poll_ajax_vote" poll.pk %}';
 var result_url = '{% url "poll_result" poll.pk %}';
+
 document.addEventListener('DOMContentLoaded', function(){
     function showResults() {
         $.get(result_url, function(data) {
@@ -67,7 +68,7 @@ $(window).bind('resize',function(){
         </ul>
         <br>
         <p id="vote_bttn" class="poll_send" style="margin: auto; padding-bottom:1%; padding-left:30%; padding-right: 30%;">
-            <input type="button" class="btn btn-outline-primary" id="poll_send" value="{% trans 'Vote' %}" />
+            <button  class="btn btn-outline-primary" id="poll_send" value="{% trans 'Vote' %}" />
         </p>
     </form>
     </div>

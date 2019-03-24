@@ -19,6 +19,12 @@ class UserProfile(models.Model):
     city = models.CharField(max_length=20, blank=True)
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
 
+    def save_model(self, request, obj, form, change):
+        if not obj.pk:
+            # Only set added_by during the first save.
+            obj.added_by = request.user
+        super().save_model(request, obj, form, change)
+
 
 class Comment(models.Model):
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE)

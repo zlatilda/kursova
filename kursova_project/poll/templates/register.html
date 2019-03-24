@@ -18,14 +18,7 @@
         {% endfor %}
       </div>
     {% endfor %}
-  {% for field in profile %}
-              <h5>{{ field.label_tag }}</h5>
-      <p style = "color: red; font-size: 13px;" id="{{ field.id_for_label}}_par"></p>
-          {{ field }}<br>
-        {% if field.help_text %}
-          <small style="color: #131317">{{ field.help_text }}</small>
-        {% endif %}
-  {% endfor %}
+
     <input value="Sign Up" id="buttonS" class="btn btn-default" type="submit" onclick="noNulls()" style = "margin-top: 2%; margin-bottom: 5%;">
 
   </div>
