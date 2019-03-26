@@ -19,7 +19,6 @@
 	<p>{% trans "Total votes" %}: <b>{{ poll.get_vote_count }}</b></p><br>
 </div>
    <!-- <div class="fb-comments" data-href="https://developers.facebook.com/docs/plugins/comments#configurator" data-numposts="5"></div>-->
-{% if comments %}
 <div class="col-12" id="comments" style="width: 50%;margin: 0 auto; padding-left: 10%; padding-right: 10%;">
 {{ comments.count }} comment{{ comments|pluralize }}
     <br>
@@ -32,6 +31,7 @@
             <p style="color:red"> You're not authenticated to write a comment<p>
         {% endif %}
     </form>
+{% if comments %}
     {% for comment in comments %}
         <div>
             <div style="color: midnightblue;">by <b>{{ comment.user}}</b> <span style="font-size: 0.75em; float:right;">{{ comment.timestamp }}</span></div>
