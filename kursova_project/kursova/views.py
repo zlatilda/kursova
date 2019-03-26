@@ -33,6 +33,32 @@ def index(request):
     return render(request, template, context)
 
 
+def active(request):
+    template = 'list.html'
+    items = Poll.objects.filter(status='Open').order_by('-date')
+    hot = Poll.objects.filter(status='Open')
+    sort_hot = sorted(hot, key=lambda t: t.get_vote_count())
+    sort_hot.reverse()
+    context = {
+
+        'items': items,
+        'hot': sort_hot[:5],
+    }
+    return render(request, template, context)
+
+def closed(request):
+    template = 'list.html'
+    items = Poll.objects.filter(status='Closed').order_by('-date')
+    hot = Poll.objects.filter(status='Open')
+    sort_hot = sorted(hot, key=lambda t: t.get_vote_count())
+    sort_hot.reverse()
+    context = {
+
+        'items': items,
+        'hot': sort_hot[:5],
+    }
+    return render(request, template, context)
+
 def search(request):
 
     template = "list.html"
