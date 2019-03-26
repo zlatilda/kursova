@@ -13,7 +13,8 @@ document.addEventListener('DOMContentLoaded', function(){
     }
     $("#poll_send").click(function() {
         var item = $('#poll_form input[name=item]:checked').val();
-        location.reload();
+        //location.reload();
+        window.location.href = window.location.href;
         if (typeof item === "undefined") {
             alert("{% trans 'Please, select an answer' %}");
             return false;

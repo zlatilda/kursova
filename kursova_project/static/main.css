@@ -58,3 +58,5 @@ body
 	#bio{max-height: 13vh; overflow-y: auto;overflow-x: hidden;}
 
     #comments{width: 50%;margin: 0 auto; padding-left: 10%; padding-right: 10%;}
+
+    #hot{position:absolute;}
