@@ -7,6 +7,7 @@ from kursova.forms import RegForm, ProfileForm
 from poll.models import *
 from django.contrib.auth.models import User
 from django.core import serializers
+from django.views.generic.list import ListView
 
 
 def post_detail(request, slug):
@@ -114,5 +115,14 @@ def get_user_profile(request, username):
         'comments': comments,
       #  'votes': votes,
         #'profile': profile,
+    }
+    return render(request, template, context)
+
+
+def user_settings(request, username):
+    template = 'settings.html'
+    user = User.objects.get(username=username)
+    context = {
+        'user': user,
     }
     return render(request, template, context)

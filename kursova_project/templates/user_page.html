@@ -14,7 +14,9 @@
 					<div class="col-11">
 						<label id="login" style="font-size:140%;"><b>{{ user.username}}</b></label>
 					</div>
-					<div class="col-1" id="ico_img" ><a href="#" style="opacity: 0.7;"><img src="{% static 'images/settings.png' %}" style="height: 25px;"></a></div>
+                    {% if request.user.username == user.username %}
+					<div class="col-1" id="ico_img" ><a href="{% url 'kursova:user_settings' request.user.username %}" style="opacity: 0.7;"><img src="{% static 'images/settings.png' %}" style="height: 25px;"></a></div>
+                    {% endif %}
 				</div>
 				<div class="row">
 					<div class="col-12">Name: <b>{{ user.first_name }}</b></div>
@@ -25,22 +27,31 @@
 		</div>
         <br><br>
 
-        <div class="container" style="padding-left: 3%; padding-right: 3%; height:70vh; overflow-y: auto;">
         <h3>{{ user.username }}'s comments</h3>
+        <div class="container" id="users_comments" style="height:70vh; overflow-y: auto;">
              {% for comment in comments %}
-            <div class="row" style="border: 1px solid black;border-radius: 5px; margin-bottom: 1%;padding-left: 1%; padding-right: 1;">
+            <div class="row" style="border: 1px solid black;border-radius: 5px; margin-bottom: 1%;padding-left: 1%; padding-right: 1%;">
                 <div class="col-12">
-                    <div class="row"><h5>{{ comment.poll}}</h5>  <p style="font-size: 0.7em; color:red;">  {{ comment.timestamp }}</p></div>
+                    <div class="row"><a href="{% url 'poll' comment.poll.pk %}"><h5>{{ comment.poll}}</h5></a>  <p style="font-size: 0.7em; color:red;">  {{ comment.timestamp }}</p></div>
                     <p>{{ comment.content }}</p>
                 </div>
             </div>
             {% endfor %}
+            <div class="loading" style="display: none;">
+                Loading...
+            </div>
+            {% if page_obj.has_next %}
+                <a class="infinite-more-link" href="?page={{ comments.next_page_number }}">More</a>
+            {% endif %}
         </div>
 	</div>
 
 </div>
 
     <script>
+
+
+  /*
 
 		var fileReader = new FileReader();
 var filterType = /^(?:image\/bmp|image\/cis\-cod|image\/gif|image\/ief|image\/jpeg|image\/jpeg|image\/jpeg|image\/pipeg|image\/png|image\/svg\+xml|image\/tiff|image\/x\-cmu\-raster|image\/x\-cmx|image\/x\-icon|image\/x\-portable\-anymap|image\/x\-portable\-bitmap|image\/x\-portable\-graymap|image\/x\-portable\-pixmap|image\/x\-rgb|image\/x\-xbitmap|image\/x\-xpixmap|image\/x\-xwindowdump)$/i;
@@ -107,5 +118,6 @@ var loadImageFile = function () {
     fileReader.readAsDataURL(uploadFile);
 }
  document.getElementById("usr").onload = loadImageFile();
+ */
     </script>
 {% endblock %}

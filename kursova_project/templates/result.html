@@ -33,7 +33,11 @@
 {% if comments %}
     {% for comment in comments %}
         <div>
-            <div style="color: midnightblue;">by <a href="{% url 'kursova:get_user_profile' comment.user.username %}"><b>{{ comment.user}}</b></a> <span style="font-size: 0.75em; float:right;">{{ comment.timestamp }}</span></div>
+            {% if request.user.is_authenticated %}
+                <div style="color: midnightblue;">by <a href="{% url 'kursova:get_user_profile' comment.user.username %}"><b>{{ comment.user}}</b></a> <span style="font-size: 0.75em; float:right;">{{ comment.timestamp }}</span></div>
+            {% else %}
+                <div style="color: midnightblue;">by <b>{{ comment.user}}</b> <span style="font-size: 0.75em; float:right;">{{ comment.timestamp }}</span></div>
+            {% endif %}
             <p class="mb-0">{{ comment.content }}</p>
         </div>
         <hr>
