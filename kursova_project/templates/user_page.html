@@ -15,7 +15,7 @@
 						<label id="login" style="font-size:140%;"><b>{{ user.username}}</b></label>
 					</div>
                     {% if request.user.username == user.username %}
-					<div class="col-1" id="ico_img" ><a href="{% url 'kursova:user_settings' request.user.username %}" style="opacity: 0.7;"><img src="{% static 'images/settings.png' %}" style="height: 25px;"></a></div>
+					<div class="col-1" id="ico_img" ><a href="{% url 'kursova:user_settings'%}" style="opacity: 0.7;"><img src="{% static 'images/settings.png' %}" style="height: 25px;"></a></div>
                     {% endif %}
 				</div>
 				<div class="row">

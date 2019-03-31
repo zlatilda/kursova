@@ -7,8 +7,8 @@ from kursova.forms import RegForm, ProfileForm
 from poll.models import *
 from django.contrib.auth.models import User
 from django.core import serializers
-from django.views.generic.list import ListView
-
+from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
+from django.contrib.auth import update_session_auth_hash
 
 def post_detail(request, slug):
 
@@ -119,10 +119,38 @@ def get_user_profile(request, username):
     return render(request, template, context)
 
 
-def user_settings(request, username):
-    template = 'settings.html'
-    user = User.objects.get(username=username)
-    context = {
-        'user': user,
-    }
-    return render(request, template, context)
+def user_settings(request):
+   # user = User.objects.get(username=username)
+    #context = {
+     #   'user': user,
+    #}
+
+    if request.method == 'POST':
+        form = EditProfileForm(request.POST, instance=request.user)
+
+        if form.is_valid():
+            form.save()
+            return redirect('kursova:index')
+        else:
+            return redirect('user-settings')
+    else:
+        form = EditProfileForm(instance=request.user)
+        args = {'form': form}
+        return render(request, 'settings.html', args)
+    #return render(request, 'settings.html', context)
+
+
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(data=request.POST, user = request.user)
+
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, form.user)
+            return redirect('kursova:index')
+        else:
+            return redirect('change-password')
+    else:
+        form = PasswordChangeForm(user=request.user)
+        args = {'form': form}
+        return render(request, 'change_password.html', args)

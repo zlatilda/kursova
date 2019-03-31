@@ -13,5 +13,6 @@ urlpatterns = [
     url(r'active/', active, name="active"),
     url(r'closed/', closed, name="closed"),
     url(r'profile/(?P<username>[-\w]+)/', get_user_profile, name='get_user_profile'),
-    url(r'user_settings/(?P<username>[-\w]+)/', user_settings, name='user_settings'),
+    url(r'user-settings/', user_settings, name='user_settings'),
+    url(r'change-password/', change_password, name='change_password'),
 ]

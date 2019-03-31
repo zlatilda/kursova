@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from .models import UserProfile, Comment
+from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 YEARS= [x for x in range(1940,2021)]
 
 class ProfileForm(forms.ModelForm):
@@ -66,3 +67,13 @@ class CommentForm(forms.ModelForm):
             'content': forms.Textarea(attrs={'class': 'form-control', 'style': 'resize:none; height: 5em;'})
         }
 
+
+class EditProfileForm(UserChangeForm):
+    class Meta:
+        model = User
+        fields = {
+            'email',
+            'first_name',
+            'last_name',
+            'password'
+        }
