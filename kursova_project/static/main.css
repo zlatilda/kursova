@@ -30,7 +30,7 @@ body
 
 #lenta{padding-right: 0.5%;}
 
-#hot{padding-left:0.5%;}
+#hot_list{padding-left:0.5%;}
 
 #content{padding-right: 10%; padding-left:10%;}
 @media only screen and (max-width: 1000px) {
@@ -39,13 +39,10 @@ body
     #hot{padding-left:2.1%;}
 }
 
-#upload-Preview
+#usr_image
 	{
-		max-width: 100%;
-		max-height: 100%;
-	}
-	#follower {
-    padding: 3px 3px;
+		width: 100%;
+        height: auto;
 	}
 	#user_content{
     max-height: 50vh;
@@ -58,5 +55,3 @@ body
 	#bio{max-height: 13vh; overflow-y: auto;overflow-x: hidden;}
 
     #comments{width: 50%;margin: 0 auto; padding-left: 10%; padding-right: 10%;}
-
-    #hot{position:absolute;}

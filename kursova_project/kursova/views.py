@@ -106,11 +106,13 @@ def create_profile(request):
 def get_user_profile(request, username):
     template = 'user_page.html'
     user = User.objects.get(username=username)
-    votes = Vote.objects.filter(user=user)
-    profile = UserProfile.objects.get(user=user)
+    comments = Comment.objects.filter(user = user).order_by('-timestamp')
+   # votes = Vote.objects.filter(user=user)
+    #profile = UserProfile.objects.get(user=user)
     context = {
         'user': user,
-        'votes': votes,
-        'profile': profile,
+        'comments': comments,
+      #  'votes': votes,
+        #'profile': profile,
     }
     return render(request, template, context)

@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'registration/create-profile', create_profile, name='create_profile'),
     url(r'active/', active, name="active"),
     url(r'closed/', closed, name="closed"),
+    url(r'profile/(?P<username>[-\w]+)/', get_user_profile, name='get_user_profile'),
 ]

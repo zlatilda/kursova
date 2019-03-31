@@ -80,7 +80,7 @@ $(window).bind('resize',function(){
 {{ comments.count }} comment{{ comments|pluralize }}
     {% for comment in comments %}
         <div>
-            <div style="color: midnightblue;">by <b>{{ comment.user}}</b> <span style="font-size: 0.75em; float:right;">{{ comment.timestamp }}</span></div>
+            <div style="color: midnightblue;">by <a href="{% url 'kursova:get_user_profile' comment.user.username %}"><b>{{ comment.user}}</b></a> <span style="font-size: 0.75em; float:right;">{{ comment.timestamp }}</span></div>
             <p class="mb-0">{{ comment.content }}</p>
         </div>
         <hr>
