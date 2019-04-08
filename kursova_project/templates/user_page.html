@@ -22,7 +22,12 @@
 					<div class="col-12">Name: <b>{{ user.first_name }}</b></div>
 					<div class="col-12">Surname: <b>{{ user.last_name }}</b></div>
                     <div class="col-12">E-mail: <b>{{ user.email }}</b></div>
-                    <div class="col-12">Birth date: <b>{{ profile.birth_date }}</b></div>
+                     {% if request.user.username == user.username %}
+                         <div class="col-12">Birth date: <b>{{ profile.birth_date }}</b></div>
+                         <div class="col-12">Sex: <b>{{ profile.sex }}</b></div>
+                         <div class="col-12">Country: <b>{{ profile.country}}</b></div>
+                         <div class="col-12">City: <b>{{ profile.city }}</b></div>
+                    {% endif %}
 				</div>
 			</div>
 		</div>

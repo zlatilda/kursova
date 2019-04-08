@@ -9,6 +9,8 @@ from django.contrib.auth.models import User
 from django.core import serializers
 from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
+from django.views.generic import TemplateView
+
 
 def post_detail(request, slug):
 
@@ -151,22 +153,6 @@ def change_password(request):
         return render(request, 'change_password.html', args)
 
 
-"""def create_profile(request):
-
-    if request.method == 'POST':
-        profile_form = FillProfileForm(request.POST, instance=request.user)
-
-        if profile_form.is_valid():
-            profile_form.save()
-            return redirect('kursova:index')
-        else:
-            return redirect('profile-form')
-    else:
-        profile_form = FillProfileForm(instance=request.user)
-        args = {'profile_form': profile_form, }
-        return render(request, 'profile.html', args)"""
-
-
 def create_profile(request):
     #template = 'profile.html'
     post = get_object_or_404(UserProfile, user=request.user)
@@ -180,3 +166,19 @@ def create_profile(request):
     else:
         profile_form = ProfileForm(instance=post)
     return render(request, 'profile.html', {'profile_form': profile_form})
+
+
+class AnalyticsIndexView(TemplateView):
+    template_name = 'analytics/admin/index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(AnalyticsIndexView, self).get_context_data(**kwargs)
+        context['30_day_registrations'] = self.thirty_day_registrations()
+        return context
+
+    def thirty_day_registrations(self):
+        sexes = []
+        count = User.objects.filter(sex = 'man')
+        sexes.append(count)
+
+        return sexes

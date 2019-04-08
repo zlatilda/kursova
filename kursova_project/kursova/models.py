@@ -30,6 +30,7 @@ class UserProfile(models.Model):
     post_save.connect(create_profile, sender=User)
 
 
+
 class Comment(models.Model):
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

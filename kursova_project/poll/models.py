@@ -67,6 +67,26 @@ class Poll(models.Model):
         self.save()
 
 
+    def sexes(self):
+        sexes = []
+        from kursova.models import UserProfile
+        count = 0
+        voted = Vote.objects.filter(poll=self)
+        for x in voted:
+            if UserProfile.objects.filter(user=x.user, sex='Male'):
+                count += 1
+        sexes.append(count)
+        count = 0
+        for x in voted:
+            if UserProfile.objects.filter(user=x.user, sex='Female'):
+                count += 1
+        sexes.append(count)
+        count = 0
+        for x in voted:
+            if UserProfile.objects.filter(user=x.user, sex='Battle helicopter'):
+                count += 1
+        sexes.append(count)
+        return sexes
 
 @python_2_unicode_compatible
 class Item(models.Model):

@@ -78,13 +78,3 @@ class EditProfileForm(UserChangeForm):
             'password',
         }
 
-
-class FillProfileForm(ProfileForm):
-    class Meta:
-        model = UserProfile
-        fields = {
-            'sex',
-            'birth_date',
-            'country',
-            'city',
-        }

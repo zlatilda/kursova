@@ -12,6 +12,7 @@
             </li>
             {% endfor %}
         </ul>
+        <canvas id="pie-chart" width="800" height="450"></canvas>
     {% else %}
           <p>Nobody has voted here yet :(  Log in and be first to vote!</p>
     {% endif %}
@@ -47,6 +48,25 @@
     <div class="col-12" style="padding-right: 20%; padding-left: 20%;"><p>No comments.</p></div>
 {% endif %}
 </div>
+    <script>
+        new Chart(document.getElementById("pie-chart"), {
+    type: 'pie',
+    data: {
+      labels: ["Men", "Women", "Battle helicopter"],
+      datasets: [{
+        label: "Population (millions)",
+        backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f"],
+        data: {{ poll.sexes }}
+      }]
+    },
+    options: {
+      title: {
+        display: true,
+        text: 'Sexes among people who voted'
+      }
+    }
+});
+    </script>
 {% endblock %}
 
 
