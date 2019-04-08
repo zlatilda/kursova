@@ -85,7 +85,7 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('kursova:index')
+            return redirect('kursova:create_profile')
     else:
         form = RegForm()
     return render(request, 'register.html', {'form': form})
@@ -93,15 +93,15 @@ def signup(request):
 
 def create_profile(request):
     if request.method == 'POST':
-        form = ProfileForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.user = request.user
-            form.save()
+        profile_form = ProfileForm(request.POST, request.FILES)
+        if profile_form.is_valid():
+            profile_form.user = request.user
+            #profile_form.save()
 
             return redirect('kursova:index')
     else:
-        form = ProfileForm()
-        return render(request, 'register.html', {'profile': form})
+        profile_form = ProfileForm()
+        return render(request, 'register.html', {'profile': profile_form})
 
 
 def get_user_profile(request, username):
@@ -109,21 +109,17 @@ def get_user_profile(request, username):
     user = User.objects.get(username=username)
     comments = Comment.objects.filter(user = user).order_by('-timestamp')
    # votes = Vote.objects.filter(user=user)
-    #profile = UserProfile.objects.get(user=user)
+    profile = UserProfile.objects.get(user=user)
     context = {
         'user': user,
         'comments': comments,
       #  'votes': votes,
-        #'profile': profile,
+        'profile': profile,
     }
     return render(request, template, context)
 
 
 def user_settings(request):
-   # user = User.objects.get(username=username)
-    #context = {
-     #   'user': user,
-    #}
 
     if request.method == 'POST':
         form = EditProfileForm(request.POST, instance=request.user)
@@ -135,9 +131,8 @@ def user_settings(request):
             return redirect('user-settings')
     else:
         form = EditProfileForm(instance=request.user)
-        args = {'form': form}
+        args = {'form': form, }
         return render(request, 'settings.html', args)
-    #return render(request, 'settings.html', context)
 
 
 def change_password(request):
@@ -154,3 +149,34 @@ def change_password(request):
         form = PasswordChangeForm(user=request.user)
         args = {'form': form}
         return render(request, 'change_password.html', args)
+
+
+"""def create_profile(request):
+
+    if request.method == 'POST':
+        profile_form = FillProfileForm(request.POST, instance=request.user)
+
+        if profile_form.is_valid():
+            profile_form.save()
+            return redirect('kursova:index')
+        else:
+            return redirect('profile-form')
+    else:
+        profile_form = FillProfileForm(instance=request.user)
+        args = {'profile_form': profile_form, }
+        return render(request, 'profile.html', args)"""
+
+
+def create_profile(request):
+    #template = 'profile.html'
+    post = get_object_or_404(UserProfile, user=request.user)
+    if request.method == "POST":
+        profile_form = ProfileForm(request.POST, instance=post)
+        if profile_form.is_valid():
+            profile_form = profile_form.save(commit=False)
+            profile_form.user = request.user
+            profile_form.save()
+            return redirect('kursova:get_user_profile', request.user.username)
+    else:
+        profile_form = ProfileForm(instance=post)
+    return render(request, 'profile.html', {'profile_form': profile_form})

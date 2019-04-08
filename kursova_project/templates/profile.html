@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load staticfiles %}e
+{% block body %}
+    <div class="container" style="padding-top: 3%;">
+        <form method="post">
+            {% csrf_token %}
+            Birth date: {{ profile_form.birth_date}}<br>
+            Sex: {{ profile_form.sex }}<br>
+            Country: {{ profile_form.country }}<br>
+            City: {{ profile_form.city }}<br>
+            <button type="submit" class="btn btn-default">Submit</button>
+        </form>
+    </div>
+{% endblock%}

@@ -3,6 +3,7 @@ from django_countries.fields import CountryField
 from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 from poll.models import Poll
+from django.db.models.signals import post_save
 
 
 class UserProfile(models.Model):
@@ -19,11 +20,14 @@ class UserProfile(models.Model):
     city = models.CharField(max_length=20, blank=True)
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
 
-    def save_model(self, request, obj, form, change):
-        if not obj.pk:
-            # Only set added_by during the first save.
-            obj.added_by = request.user
-        super().save_model(request, obj, form, change)
+    def __str__(self):
+        return self.user.username
+
+    def create_profile(sender, **kwargs):
+        if kwargs['created']:
+            user_profile = UserProfile.objects.create(user=kwargs['instance'])
+
+    post_save.connect(create_profile, sender=User)
 
 
 class Comment(models.Model):

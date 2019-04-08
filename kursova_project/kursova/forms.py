@@ -15,7 +15,7 @@ class ProfileForm(forms.ModelForm):
         model = UserProfile
         fields = ('birth_date', 'sex', 'country', 'city', 'avatar')
         widgets = {
-            'sex': forms.Select(attrs={'class':'form-control'}),
+            'sex': forms.Select(attrs={'class': 'form-control'}),
             'country': forms.Select(attrs={'class': 'form-control'}),
             'city': forms.TextInput(attrs={'class': 'form-control'}),
         }
@@ -75,5 +75,16 @@ class EditProfileForm(UserChangeForm):
             'email',
             'first_name',
             'last_name',
-            'password'
+            'password',
+        }
+
+
+class FillProfileForm(ProfileForm):
+    class Meta:
+        model = UserProfile
+        fields = {
+            'sex',
+            'birth_date',
+            'country',
+            'city',
         }
