@@ -9,6 +9,8 @@ from django.conf import settings
 from django.utils.translation import gettext as _
 from django.db.models.manager import Manager
 from django.template.defaultfilters import slugify
+from django.db.models import Count
+import json
 
 
 try:
@@ -88,6 +90,51 @@ class Poll(models.Model):
         sexes.append(count)
         return sexes
 
+    """def countries(self):
+        from kursova.models import UserProfile
+        val = UserProfile.objects.values('country').annotate(dcount=Count('country'))
+        users = val.all().values_list('user', flat=True)
+        cntrs = val.all().values_list('country', flat=True)
+        cntrs = list(cntrs)
+        cntrs_for_js = json.dumps(cntrs)
+        ppl = val.all().values_list('dcount', flat=True)
+        ppl = list(ppl)
+        context = {
+            'cntrs_for_js': cntrs_for_js,
+            'ppl': ppl,
+        }
+        return context"""
+
+    def countries(self):
+        from kursova.models import UserProfile
+        count = 0
+        voted = Vote.objects.filter(poll=self)
+        val = UserProfile.objects.values('country', 'user')
+        cntrs = val.all().values_list('country', flat=True)
+        cntrs = list(cntrs)
+        dict = {}
+        for x in voted:
+            for y in cntrs:
+                if UserProfile.objects.filter(user=x.user, country=y):
+                    if y in dict:
+                        count = dict[y] + 1
+                    else:
+                        count += 1
+                    dict[y] = count
+                    break
+            count = 0
+
+        countries_keys = list(dict.keys())
+        countries_values = list(dict.values())
+        countries_keys = json.dumps(countries_keys)
+        context = {
+            'dict': dict,
+            'countries_keys': countries_keys,
+            'countries_values': countries_values,
+        }
+        return context
+
+
 @python_2_unicode_compatible
 class Item(models.Model):
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE)
@@ -109,12 +156,14 @@ class Item(models.Model):
 
 @python_2_unicode_compatible
 class Vote(models.Model):
+    from kursova.models import UserProfile
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE, verbose_name=_('poll'))
     item = models.ForeignKey(Item, on_delete=models.CASCADE, verbose_name=_('voted item'))
     ip = models.GenericIPAddressField(verbose_name=_('user\'s IP'))
     user = models.ForeignKey(User, on_delete=models.SET_NULL, blank=True, null=True,
                              verbose_name=_('user'))
     datetime = models.DateTimeField(auto_now_add=True)
+
 
     class Meta:
         verbose_name = _('vote')

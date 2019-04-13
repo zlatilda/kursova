@@ -12,7 +12,11 @@
             </li>
             {% endfor %}
         </ul>
+        {{ poll.countries.cntrs_for_js }}<br>
+        {{ poll.countries.ppl }}<br>
+        {{ poll.c.dict }}
         <canvas id="pie-chart" width="800" height="450"></canvas>
+        <canvas id="bar-chart-horizontal" width="800" height="450"></canvas>
     {% else %}
           <p>Nobody has voted here yet :(  Log in and be first to vote!</p>
     {% endif %}
@@ -64,6 +68,35 @@
         display: true,
         text: 'Sexes among people who voted'
       }
+    }
+});
+        var arr = {{ poll.countries.countries_keys|safe }};
+
+        new Chart(document.getElementById("bar-chart-horizontal"), {
+    type: 'horizontalBar',
+    data: {
+      labels: arr,
+      datasets: [
+        {
+          label: "People voted",
+          backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+          data: {{ poll.countries.countries_values }}
+        }
+      ]
+    },
+    options: {
+      legend: { display: false },
+      title: {
+        display: true,
+        text: 'Countries people voted from'
+      },
+        scales: {
+        xAxes: [{
+            ticks: {
+                beginAtZero: true
+            }
+        }]
+    }
     }
 });
     </script>

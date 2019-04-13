@@ -109,4 +109,3 @@ def result(request, poll_pk):
         'comments': comments,
         'comment_form': comment_form,
     })
-

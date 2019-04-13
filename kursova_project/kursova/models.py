@@ -16,7 +16,7 @@ class UserProfile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)
     birth_date = models.DateField(blank=True, null=True)
     sex = models.CharField(max_length=20, default='Male', choices=SEX_CHOISES)
-    country = CountryField(blank_label='(Choose country)', )
+    country = CountryField(blank_label='(Choose country)',)
     city = models.CharField(max_length=20, blank=True)
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
 

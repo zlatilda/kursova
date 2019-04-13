@@ -167,18 +167,3 @@ def create_profile(request):
         profile_form = ProfileForm(instance=post)
     return render(request, 'profile.html', {'profile_form': profile_form})
 
-
-class AnalyticsIndexView(TemplateView):
-    template_name = 'analytics/admin/index.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(AnalyticsIndexView, self).get_context_data(**kwargs)
-        context['30_day_registrations'] = self.thirty_day_registrations()
-        return context
-
-    def thirty_day_registrations(self):
-        sexes = []
-        count = User.objects.filter(sex = 'man')
-        sexes.append(count)
-
-        return sexes
