@@ -11,6 +11,7 @@ from django.db.models.manager import Manager
 from django.template.defaultfilters import slugify
 from django.db.models import Count
 import json
+from django.utils.translation import ugettext_lazy
 
 
 try:
@@ -109,7 +110,7 @@ class Poll(models.Model):
         from kursova.models import UserProfile
         count = 0
         voted = Vote.objects.filter(poll=self)
-        val = UserProfile.objects.values('country', 'user')
+        val = UserProfile.objects.values('country')
         cntrs = val.all().values_list('country', flat=True)
         cntrs = list(cntrs)
         dict = {}
@@ -123,7 +124,6 @@ class Poll(models.Model):
                     dict[y] = count
                     break
             count = 0
-
         countries_keys = list(dict.keys())
         countries_values = list(dict.values())
         countries_keys = json.dumps(countries_keys)
@@ -131,6 +131,50 @@ class Poll(models.Model):
             'dict': dict,
             'countries_keys': countries_keys,
             'countries_values': countries_values,
+        }
+        return context
+
+    def age(self):
+        from kursova.models import UserProfile
+        voted = Vote.objects.filter(poll=self)
+
+        dict = {}
+        count  = 0
+
+        for x in voted:
+            if UserProfile.objects.filter(user=x.user):
+                obj = UserProfile.objects.get(user=x.user)
+                if (datetime.date.today() - obj.birth_date).days /365.25 <= 18:
+                    if "under 18" in dict:
+                        count = dict["under 18"] + 1
+                    else:
+                        count += 1
+                    dict["under 18"] = count
+                elif 18 < (datetime.date.today() - obj.birth_date).days /365.25 <= 40:
+                    if "18+" in dict:
+                        count = dict["18+"] + 1
+                    else:
+                        count += 1
+                    dict["18+"] = count
+                elif 40 < (datetime.date.today() - obj.birth_date).days /365.25 <= 60:
+                    if "40+" in dict:
+                        count = dict["40+"] + 1
+                    else:
+                        count += 1
+                    dict["40+"] = count
+                elif 60 < (datetime.date.today() - obj.birth_date).days /365.25:
+                    if "60+" in dict:
+                        count = dict["60+"] + 1
+                    else:
+                        count += 1
+                    dict["60+"] = count
+                count = 0
+        age_keys = list(dict.keys())
+        age_values = list(dict.values())
+        age_keys = json.dumps(age_keys)
+        context = {
+            'age_keys': age_keys,
+            'age_values': age_values,
         }
         return context
 

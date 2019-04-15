@@ -12,16 +12,14 @@
             </li>
             {% endfor %}
         </ul>
-        {{ poll.countries.cntrs_for_js }}<br>
-        {{ poll.countries.ppl }}<br>
-        {{ poll.c.dict }}
+        <p>{% trans "Total votes" %}: <b>{{ poll.get_vote_count }}</b></p><br>
         <canvas id="pie-chart" width="800" height="450"></canvas>
         <canvas id="bar-chart-horizontal" width="800" height="450"></canvas>
+        <canvas id="bar-chart" width="800" height="450"></canvas>
     {% else %}
           <p>Nobody has voted here yet :(  Log in and be first to vote!</p>
     {% endif %}
-
-	<p>{% trans "Total votes" %}: <b>{{ poll.get_vote_count }}</b></p><br>
+    <br>
 </div>
 <div class="col-12" id="comments" style="width: 50%;margin: 0 auto; padding-left: 10%; padding-right: 10%;">
 {{ comments.count }} comment{{ comments|pluralize }}
@@ -70,16 +68,17 @@
       }
     }
 });
-        var arr = {{ poll.countries.countries_keys|safe }};
 
-        new Chart(document.getElementById("bar-chart-horizontal"), {
+
+
+    new Chart(document.getElementById("bar-chart-horizontal"), {
     type: 'horizontalBar',
     data: {
-      labels: arr,
+      labels: {{ poll.countries.countries_keys|safe }},
       datasets: [
         {
           label: "People voted",
-          backgroundColor: ["#3e95cd", "#8e5ea2","#3cba9f","#e8c3b9","#c45850"],
+          backgroundColor: ["#6dcd57", "#a24446","#baac68","#96e8c7","#c480c3"],
           data: {{ poll.countries.countries_values }}
         }
       ]
@@ -92,6 +91,34 @@
       },
         scales: {
         xAxes: [{
+            ticks: {
+                beginAtZero: true
+            }
+        }]
+    }
+    }
+});
+
+    new Chart(document.getElementById("bar-chart"), {
+    type: 'bar',
+    data: {
+      labels: {{ poll.age.age_keys|safe }},
+      datasets: [
+        {
+          label: "people",
+          backgroundColor: ["#f71911", "#9e1b11","#5c0302","#240000"],
+          data: {{ poll.age.age_values }}
+        }
+      ]
+    },
+    options: {
+      legend: { display: false },
+      title: {
+        display: true,
+        text: 'Age of people who voted'
+      },
+       scales: {
+        yAxes: [{
             ticks: {
                 beginAtZero: true
             }
