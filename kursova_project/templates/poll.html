@@ -35,6 +35,8 @@ $(window).bind('resize',function(){
         document.getElementById("choices").style.paddingRight = "10%";
         document.getElementById("vote_bttn").style.paddingLeft = "10%";
         document.getElementById("vote_bttn").style.paddingRight = "10%";
+        document.getElementById("pic").style.paddingLeft = "10%";
+        document.getElementById("pic").style.paddingRight = "10%";
     }
     if($(window).innerWidth() > 1000)
     {
@@ -44,6 +46,8 @@ $(window).bind('resize',function(){
         document.getElementById("choices").style.paddingRight = "30%";
         document.getElementById("vote_bttn").style.paddingLeft = "30%";
         document.getElementById("vote_bttn").style.paddingRight = "30%";
+        document.getElementById("pic").style.paddingLeft = "20%";
+        document.getElementById("pic").style.paddingRight = "20%";
     }
 });
 </script>
@@ -53,8 +57,10 @@ $(window).bind('resize',function(){
     <div class="container">
     <br>
     <form method="GET" action="." id="poll_form">
+        <div id="pic" style="padding-left:20%; padding-right: 20%;"><img style="width:100%; height:100%;" src="{{ poll.thumb.url }}"/></div>
         <h4 style="padding-left:30%; padding-right: 30%" id="poll_title" class="title">{{ poll.title }}</h4>
         <p style="padding-left:30%; padding-right: 30%">{{ poll.description }}</p>
+
         <br>
         <ul style="list-style-type: none; margin: auto; padding-left:30%; padding-right: 30%" id="choices">
             {% for i in items %}
@@ -85,8 +91,6 @@ $(window).bind('resize',function(){
         <hr>
     {% endfor %}
 
-{% else %}
-    No comments.
 {% endif %}
 </div>
 

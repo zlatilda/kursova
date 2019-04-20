@@ -4,6 +4,7 @@ from django.template.defaultfilters import slugify
 from django.contrib.auth.models import User
 from poll.models import Poll
 from django.db.models.signals import post_save
+import uuid
 
 
 class UserProfile(models.Model):

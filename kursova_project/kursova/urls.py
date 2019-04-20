@@ -15,4 +15,6 @@ urlpatterns = [
     url(r'profile/(?P<username>[-\w]+)/', get_user_profile, name='get_user_profile'),
     url(r'user-settings/', user_settings, name='user_settings'),
     url(r'change-password/', change_password, name='change_password'),
+    url(r'statistics/', statistics, name='statistics'),
+    url(r'delete-comment/', DeleteComment.as_view(), name='DeleteComment'),
 ]

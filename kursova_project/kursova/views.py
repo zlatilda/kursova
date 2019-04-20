@@ -1,3 +1,5 @@
+from django.urls import reverse
+
 from .models import UserProfile, Comment
 from .forms import *
 from django.db.models import Q
@@ -9,7 +11,7 @@ from django.contrib.auth.models import User
 from django.core import serializers
 from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, RedirectView
 
 
 def post_detail(request, slug):
@@ -167,3 +169,34 @@ def create_profile(request):
         profile_form = ProfileForm(instance=post)
     return render(request, 'profile.html', {'profile_form': profile_form})
 
+
+class DeleteComment(RedirectView):
+    def del_comment(request):
+        Comment.objects.filter(id=request.POST.get("id", "")).delete()
+        return redirect('kursova:index')
+
+def statistics(request):
+    return render(request, 'statistics.html')
+
+
+class Charts(TemplateView):
+    template_name = 'statistics.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(Charts, self).get_context_data(**kwargs)
+        context['sxs'] = self.sexes()
+        return context
+
+    def sexes(self):
+        sexes = []
+        from kursova.models import UserProfile
+        count = 0
+        count = UserProfile.objects.filter(sex='Male').count()
+        sexes.append(count)
+
+        count = UserProfile.objects.filter(sex='Female').count()
+        sexes.append(count)
+
+        count = UserProfile.objects.filter(sex='Battle helicopter').count()
+        sexes.append(count)
+        return sexes

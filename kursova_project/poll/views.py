@@ -9,6 +9,9 @@ from .utils import set_cookie
 from .models import Poll, Item, Vote
 from kursova.models import *
 from kursova.forms import *
+from django.views.generic import RedirectView
+from django.shortcuts import get_object_or_404
+from django.urls import reverse
 
 
 def vote(request, poll_pk):
