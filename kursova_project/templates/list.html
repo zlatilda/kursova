@@ -22,8 +22,8 @@
 			    </a>
                 {% endfor %}
 		    </div>
-
 	</div>
+
     <div class="col-md-4 col-sm-12" id="hot_list">
         <br>
             <h4 style="color: darkred; text-align: center;">Гаряче</h4>
@@ -47,4 +47,27 @@
 
      </div>
 
+    {% if items.has_other_pages %}
+        <nav class="col-12"style="padding-top: 2%;">
+          <ul class="pagination justify-content-center">
+            {% if items.has_previous %}
+              <li class="page-item"><a class="page-link" href="?page={{ items.previous_page_number }}">Prev</a></li>
+            {% else %}
+              <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">Prev</a></li>
+            {% endif %}
+            {% for i in items.paginator.page_range %}
+              {% if items.number == i %}
+                  <li class="page-item active."><a class="page-link"><span>{{ i }} <span class="sr-only">(current)</span></span></a></li>
+              {% else %}
+                <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+              {% endif %}
+            {% endfor %}
+            {% if items.has_next %}
+              <li class="page-item"><a class="page-link" href="?page={{ items.next_page_number }}">Next</a></li>
+            {% else %}
+              <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">Next</a></li>
+            {% endif %}
+          </ul>
+        </nav>
+{% endif %}
 {% endblock%}

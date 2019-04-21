@@ -179,6 +179,20 @@ class Poll(models.Model):
         }
         return context
 
+    def average_age(self):
+        from kursova.models import UserProfile
+        voted = Vote.objects.filter(poll=self)
+
+        sum = 0
+        count = 0
+
+        for x in voted:
+            if UserProfile.objects.filter(user=x.user):
+                obj = UserProfile.objects.get(user=x.user)
+                sum += (datetime.date.today() - obj.birth_date).days / 365.25
+                count += 1
+
+        return round(sum/count, 2)
 
 @python_2_unicode_compatible
 class Item(models.Model):

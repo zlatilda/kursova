@@ -12,6 +12,7 @@ from django.core import serializers
 from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.views.generic import TemplateView, RedirectView
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def post_detail(request, slug):
@@ -30,6 +31,17 @@ def index(request):
     hot = Poll.objects.filter(status='Open')
     sort_hot = sorted(hot, key = lambda t: t.get_vote_count())
     sort_hot.reverse()
+
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(items, 10)
+    try:
+        items = paginator.page(page)
+    except PageNotAnInteger:
+        items = paginator.page(1)
+    except EmptyPage:
+        items = paginator.page(paginator.num_pages)
+
     context = {
 
         'items': items,
@@ -178,25 +190,3 @@ class DeleteComment(RedirectView):
 def statistics(request):
     return render(request, 'statistics.html')
 
-
-class Charts(TemplateView):
-    template_name = 'statistics.html'
-
-    def get_context_data(self, **kwargs):
-        context = super(Charts, self).get_context_data(**kwargs)
-        context['sxs'] = self.sexes()
-        return context
-
-    def sexes(self):
-        sexes = []
-        from kursova.models import UserProfile
-        count = 0
-        count = UserProfile.objects.filter(sex='Male').count()
-        sexes.append(count)
-
-        count = UserProfile.objects.filter(sex='Female').count()
-        sexes.append(count)
-
-        count = UserProfile.objects.filter(sex='Battle helicopter').count()
-        sexes.append(count)
-        return sexes
