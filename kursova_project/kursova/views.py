@@ -1,6 +1,6 @@
 from django.urls import reverse
 
-from .models import UserProfile, Comment
+from .models import UserProfile, Comment, Post
 from .forms import *
 from django.db.models import Q
 from django.contrib.auth import login, authenticate
@@ -182,11 +182,21 @@ def create_profile(request):
     return render(request, 'profile.html', {'profile_form': profile_form})
 
 
-class DeleteComment(RedirectView):
+class DeleteComment(RedirectView):           #_____________________doesn't work___________________
     def del_comment(request):
         Comment.objects.filter(id=request.POST.get("id", "")).delete()
         return redirect('kursova:index')
 
-def statistics(request):
-    return render(request, 'statistics.html')
+
+def post_list(request):
+
+    template = 'post.html'
+    items = Post.objects.order_by('-created')
+    context = {
+
+       'items': items,
+    }
+
+    return render(request, template, context)
+
 

@@ -16,4 +16,5 @@ urlpatterns = [
     url(r'user-settings/', user_settings, name='user_settings'),
     url(r'change-password/', change_password, name='change_password'),
     url(r'delete-comment/', DeleteComment.as_view(), name='DeleteComment'),
+    url(r'articles/', post_list, name='post_list'),
 ]

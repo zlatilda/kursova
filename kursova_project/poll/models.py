@@ -92,21 +92,6 @@ class Poll(models.Model):
         sexes.append(count)
         return sexes
 
-    """def countries(self):
-        from kursova.models import UserProfile
-        val = UserProfile.objects.values('country').annotate(dcount=Count('country'))
-        users = val.all().values_list('user', flat=True)
-        cntrs = val.all().values_list('country', flat=True)
-        cntrs = list(cntrs)
-        cntrs_for_js = json.dumps(cntrs)
-        ppl = val.all().values_list('dcount', flat=True)
-        ppl = list(ppl)
-        context = {
-            'cntrs_for_js': cntrs_for_js,
-            'ppl': ppl,
-        }
-        return context"""
-
     def countries(self):
         from kursova.models import UserProfile
         count = 0

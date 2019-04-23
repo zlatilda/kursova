@@ -2,26 +2,72 @@
 {% load staticfiles %}
 {% block title %}{{ post.title }}{% endblock %}
 {% block body %}
-    	<div class="container" style="background-color:rgb(0, 0, 0);  padding-bottom: 20px;">
-		<div class="row">
-			<div class="col-11">
-				<h2 style="color:white;">{{ post.title }}</h2>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-7" id="userName"><h6 style="color:#d5d9e0;"><a href="#" style="color:#d5d9e0;">dupkoauthor</a></h6></div>
-			<!--{% if post.author == request.user or request.user.is_staff  %}-->
-			<div class="col-1"  id="comment" style="height: 25px;"><a  href="#"><img src="{% static 'images/edit.png' %}" style= "width: auto;height: 100%;opacity: 0.7;"></a></div>
-			<div class="col-1"  id="comment" style="height: 25px; float:right"><a href="#"><img src="{% static 'images/delete.png' %}" style="width: auto;height: 100%;opacity: 0.8;"></a></div>
-			<!--{% endif %}-->
-			<div class="col-1"><label class="_status">{{ post.status }}</label></div>
-			<div class="col-2" style="font-size:12px;text-align: right; color:white;">published at: <label style="font-style:italic; color:red;">{{ post.created }}</label></div>
-		</div>
-		
-		<div class="row">
-			<div class="col-12" style="background-color:white; padding: 20px 20px 20px 20px;">
-				<p>{{ post.body|linebreaks }}  </p>
-			</div>
-		</div>
+    <style>
+       .thumbnail {
+  position: relative;
+  width: 300px;
+  height: 300px;
+  overflow: hidden;
+}
+.thumbnail img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 100%;
+  width: auto;
+  -webkit-transform: translate(-50%,-50%);
+      -ms-transform: translate(-50%,-50%);
+          transform: translate(-50%,-50%);
+}
+.thumbnail img.portrait {
+  width: 100%;
+  height: auto;
+}
+
+    p {
+	 overflow: hidden;
+   text-overflow: ellipsis;
+   display: -webkit-box;
+   line-height: 20px;     /* fallback */
+   max-height: 100px;      /* fallback */
+   -webkit-line-clamp: 4; /* number of lines to show */
+   -webkit-box-orient: vertical;
+}
+    label{color: palevioletred;}
+    a:hover{text-decoration: none;}
+    </style>
+    	<div class="container" style="">
+        <div class="row">
+        {% for obj in items %}
+            {% if obj.status == 'Published' %}
+
+                    <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+                        <div class="thumbnail">
+                            <img class="post_pic" src="{{ obj.thumb.url }}"  >
+                        </div>
+                        <a href=""><h3>{{ obj.title }}</h3></a>
+                        <p>{{ obj.body }}</p>
+                        <label>{{ obj.created }}</label>
+                    </div>
+
+            {% endif %}
+        {% endfor %}
         </div>
+        </div>
+
+    <script type="text/javascript" language="javascript">
+    $(document).ready(function(){
+         var elements = document.getElementsByClassName("post_pic");
+        for(var i=0; i<elements.length; i++)
+        {
+            var el = elements[i];
+            if(el.offsetWidth < el.offsetHeight)
+            {
+                el.className = "portrait"
+            }
+
+        }
+
+    });
+    </script>
 {% endblock %}
