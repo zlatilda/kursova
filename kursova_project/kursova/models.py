@@ -7,9 +7,6 @@ from django.db.models.signals import post_save
 from django.urls import reverse
 from django.conf import settings
 
-
-
-
 class UserProfile(models.Model):
 
     SEX_CHOISES = (
@@ -34,16 +31,6 @@ class UserProfile(models.Model):
     post_save.connect(create_profile, sender=User)
 
 
-class Comment(models.Model):
-    poll = models.ForeignKey(Poll, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    content = models.TextField(max_length = 500)
-    timestamp = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return '{}-{}'.format(self.poll.title, str(self.user.username))
-
-
 class Post(models.Model):
 
     STATUS_CHOISES = (
@@ -59,9 +46,10 @@ class Post(models.Model):
     slug = models.SlugField(max_length=250, unique=True)
     status = models.CharField(max_length=10, default='Draft', choices=STATUS_CHOISES)
     thumb = models.ImageField(default='default.png', blank=True)
+    poll_link = models.TextField(default='')
 
     def get_absolute_url(self):
-        return reverse("blog:blog_detail", kwargs={"slug": self.slug})
+        return reverse("kursova:article_detail", kwargs={"post_pk": self.pk})
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
@@ -71,9 +59,17 @@ class Post(models.Model):
         return self.title
 
     def get_like_url(self):
-        return reverse("blog:like-toggle", kwargs={"slug": self.slug})
+        return reverse("kursova:like-toggle", kwargs={"slug": self.slug})
 
     def get_api_like_url(self):
         return reverse("blog:like-api-toggle", kwargs={"slug": self.slug})
 
 
+class Comment(models.Model):
+    poll = models.ForeignKey(Poll, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    content = models.TextField(max_length = 500)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return '{}-{}'.format(self.poll.title, str(self.user.username))

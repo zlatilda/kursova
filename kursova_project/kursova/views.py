@@ -200,3 +200,35 @@ def post_list(request):
     return render(request, template, context)
 
 
+def article_detail(request, post_pk):
+
+    template = 'post_detail.html'
+    post = get_object_or_404(Post, pk=post_pk)
+    rand_poll = Poll.objects.filter(status='Open').order_by('?')
+    rand_post = Post.objects.order_by('?')
+    context = {
+        'post': post,
+        'rand_poll': rand_poll[:5],
+        'rand_post': rand_post[:5],
+    }
+    return render(request, template, context)
+
+class PostLikeToggle(RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        slug = self.kwargs.get("slug")
+        print(slug)
+        obj = get_object_or_404(Post, slug=slug)
+        url_ = obj.get_absolute_url()
+        user = self.request.user
+        if user.is_authenticated:
+            if user in obj.likes.all():
+                obj.likes.remove(user)
+            else:
+                obj.likes.add(user)
+        return url_
+
+
+
+
+
+

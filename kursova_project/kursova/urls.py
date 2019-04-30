@@ -1,6 +1,7 @@
 from django.conf.urls import url, include
 from .views import *
 from django.contrib.auth import views as auth
+from . import views as core_view
 app_name = 'kursova'
 
 urlpatterns = [
@@ -17,4 +18,6 @@ urlpatterns = [
     url(r'change-password/', change_password, name='change_password'),
     url(r'delete-comment/', DeleteComment.as_view(), name='DeleteComment'),
     url(r'articles/', post_list, name='post_list'),
+    url(r'artcl/(?P<post_pk>[-\w]+)/', article_detail, name="article_detail"),
+    url(r'(?P<slug>[-\w]+)/like/', core_view.PostLikeToggle.as_view(), name="like-toggle"),
 ]

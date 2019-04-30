@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'PIL',
     'poll',
     'kursova',
+    'django_social_share',
 ]
 
 MIDDLEWARE = [

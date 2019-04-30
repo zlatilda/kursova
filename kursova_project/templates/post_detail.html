@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}{{ post.title }}{% endblock %}
+{% block body %}
+    <style>
+        img{height: auto; width: 100%;}
+
+        @media only screen and (min-width: 992px) {
+            h1 {
+                margin-top: 4em;
+            }
+        }
+
+    #header_div{background-color: rgba(0, 0, 0, 0.08);}
+    #heart{height: 30px;}
+    #heartimg
+    {
+      width: auto;
+        height: 100%;
+    }
+
+    </style>
+
+    <div class="container">
+    <div class="row" id="header_div">
+        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12"><img src="{{ post.thumb.url }}"></div>
+        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12"><h1>{{ post.title }}</h1></div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8 col-md-7 col-sm-12 col-xs-12">
+            {{ post.body }}
+        </div>
+        <div class="col-lg-4 col-md-5 col-sm-12 col-xs-12" id="hot_list">
+                <div class="list-group">
+                     {% for obj in rand_poll %}
+                    <a href="{% url 'poll' obj.pk %}" class="list-group-item list-group-item-action">
+                        <div class="row">
+                            <div class="col-12">
+                                <h5>{{ obj.title }}</h5>
+                                <div class="row">
+                                    <div class="col-6" id="status">Статус:<label class="_status">{{ obj.status }}</label></div>
+                                    <div class="col-6" id="ppl_voted">Проголосувало:<label><b>{{ obj.vote_count }}</b></label></div>
+                                    <div class="col-6" id="comment"><img src="{% static 'images/comment.png' %}" id="ico_img"><label>{{obj.get_comment_count}}</label></div>
+                                    <div class="col-6" id="date"><label id="from_date">{{ obj.date }}</label><label> --- </label><label id="to_date">{{ obj.final_date }}</label></div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                    {% endfor %}
+                </div>
+        </div>
+    </div>
+    {% if post.poll_link != 'none' %}
+        <a href={{ post.poll_link }}><h4>If you wish to participate in the poll click here!</h4></a>
+    {% endif %}
+    <br>
+    <div class="row">
+        <div class="col-2" id="heart">
+            <a href = "{{ post.get_like_url }}"><img src="{% static 'images/heart.png' %}" id="heartimg"></a><label style="font-weight:bold;">{{ post.likes.count }}</label>
+         </div>
+        {% load social_share %}
+        {% post_to_facebook object_or_url "Post to Facebook!" %}
+
+    </div>
+        <br><hr>
+    <div class="row"><h4>Read as well....</h4></div>
+    <ul>
+        {% for obj in rand_post %}
+           <a href="{% url 'kursova:article_detail' obj.pk %}"> <li>{{ obj.title }}</li></a>
+        {% endfor %}
+    </ul>
+     </div>
+{% endblock %}
