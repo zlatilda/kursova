@@ -19,5 +19,5 @@ urlpatterns = [
     url(r'articles/', post_list, name='post_list'),
     url(r'artcl/(?P<post_pk>[-\w]+)/', article_detail, name="article_detail"),
     url(r'(?P<slug>[-\w]+)/like/', core_view.PostLikeToggle.as_view(), name="like-toggle"),
-    url(r'^(?P<poll_pk>[-\w]+)/delete/$', comment_delete, name='comment_delete'),
+    url(r'^(?P<pk>[-\w]+)/delete/$', comment_delete, name='comment_delete'),
 ]

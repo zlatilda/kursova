@@ -38,7 +38,12 @@
              {% for comment in comments %}
             <div class="row" style="border: 1px solid black;border-radius: 5px; margin-bottom: 1%;padding-left: 1%; padding-right: 1%;">
                 <div class="col-12">
-                    <div class="row"><a href="{% url 'poll' comment.poll.pk %}"><h5>{{ comment.poll}}</h5></a>  <p style="font-size: 0.7em; color:red;">  {{ comment.timestamp }}</p></div>
+                    <div class="row">
+                        <a href="{% url 'poll' comment.poll.pk %}"><h5>{{ comment.poll}}</h5></a>  <p style="font-size: 0.7em; color:red;">  {{ comment.timestamp }}</p>
+                        {% if request.user.username == user.username %}
+                        <a href="{% url 'kursova:comment_delete' comment.pk %}" onclick="return confirm('Do you really want to delete this comment?')" style="position:absolute; right: 0;"><img src="{% static 'images/delete.png' %}" style="height: 15px;"></a>
+                        {% endif %}
+                    </div>
                     <p>{{ comment.content }}</p>
                 </div>
             </div>

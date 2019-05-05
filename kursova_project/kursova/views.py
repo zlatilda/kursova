@@ -233,12 +233,14 @@ class PostLikeToggle(RedirectView):
         return url_
 
 
-def comment_delete(request, id):
-    obj = get_object_or_404(Comment, id=id)
-    context = {
-        "object": obj,
-    }
-    return render(request, 'del_comment.html', context)
+def comment_delete(request, pk):
+    comment = Comment.objects.get(pk=pk)
+    if comment.user == request.user:
+        comment.is_removed = True
+        comment.save()
+        comment.delete()
+
+    return redirect(request.META['HTTP_REFERER'])
 
 
 
