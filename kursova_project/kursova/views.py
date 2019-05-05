@@ -182,10 +182,10 @@ def create_profile(request):
     return render(request, 'profile.html', {'profile_form': profile_form})
 
 
-class DeleteComment(RedirectView):           #_____________________doesn't work___________________
+"""class DeleteComment(RedirectView):           #_____________________doesn't work___________________
     def del_comment(request):
         Comment.objects.filter(id=request.POST.get("id", "")).delete()
-        return redirect('kursova:index')
+        return redirect('kursova:index')"""
 
 
 def post_list(request):
@@ -206,12 +206,17 @@ def article_detail(request, post_pk):
     post = get_object_or_404(Post, pk=post_pk)
     rand_poll = Poll.objects.filter(status='Open').order_by('?')
     rand_post = Post.objects.order_by('?')
+
+    images = Images.objects.filter(slug=post.slug)
+
     context = {
         'post': post,
         'rand_poll': rand_poll[:5],
         'rand_post': rand_post[:5],
+        'images': images,
     }
     return render(request, template, context)
+
 
 class PostLikeToggle(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
@@ -228,6 +233,12 @@ class PostLikeToggle(RedirectView):
         return url_
 
 
+def comment_delete(request, id):
+    obj = get_object_or_404(Comment, id=id)
+    context = {
+        "object": obj,
+    }
+    return render(request, 'del_comment.html', context)
 
 
 

@@ -46,7 +46,7 @@ class Post(models.Model):
     slug = models.SlugField(max_length=250, unique=True)
     status = models.CharField(max_length=10, default='Draft', choices=STATUS_CHOISES)
     thumb = models.ImageField(default='default.png', blank=True)
-    poll_link = models.TextField(default='')
+    poll_link = models.TextField(default='none')
 
     def get_absolute_url(self):
         return reverse("kursova:article_detail", kwargs={"post_pk": self.pk})
@@ -65,6 +65,21 @@ class Post(models.Model):
         return reverse("blog:like-api-toggle", kwargs={"slug": self.slug})
 
 
+def get_image_filename(instance, filename):
+    title = instance.post.title
+    slug = slugify(title)
+    return "post_images/%s-%s" % (slug, filename)
+
+
+class Images(models.Model):
+    #post = models.ForeignKey(Post, default=None, on_delete=models.CASCADE)
+    slug = models.TextField(default='none')
+    image = models.ImageField(default='default.png', blank=True)
+
+    def __str__(self):
+        return self.image.name
+
+
 class Comment(models.Model):
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -73,3 +88,8 @@ class Comment(models.Model):
 
     def __str__(self):
         return '{}-{}'.format(self.poll.title, str(self.user.username))
+
+    def get_absolute_url(self):
+        return reverse("poll:poll", kwargs={"poll_pk": self.pk})
+
+

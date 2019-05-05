@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}{{ post.title }}{% endblock %}
+{% block body %}
+    {{ object.content }}
+    <input type="submit" value="Confirm">
+    <a href="{{ object.get_absolute_url }}" type="submit">cencel</a>
+
+{% endblock %}

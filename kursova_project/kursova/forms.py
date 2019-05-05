@@ -1,8 +1,9 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import UserProfile, Comment
+from .models import UserProfile, Comment, Images
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 YEARS= [x for x in range(1940,2021)]
+
 
 class ProfileForm(forms.ModelForm):
 
@@ -78,4 +79,3 @@ class EditProfileForm(UserChangeForm):
             'last_name',
             'password',
         }
-

@@ -16,8 +16,8 @@ urlpatterns = [
     url(r'profile/(?P<username>[-\w]+)/', get_user_profile, name='get_user_profile'),
     url(r'user-settings/', user_settings, name='user_settings'),
     url(r'change-password/', change_password, name='change_password'),
-    url(r'delete-comment/', DeleteComment.as_view(), name='DeleteComment'),
     url(r'articles/', post_list, name='post_list'),
     url(r'artcl/(?P<post_pk>[-\w]+)/', article_detail, name="article_detail"),
     url(r'(?P<slug>[-\w]+)/like/', core_view.PostLikeToggle.as_view(), name="like-toggle"),
+    url(r'^(?P<poll_pk>[-\w]+)/delete/$', comment_delete, name='comment_delete'),
 ]

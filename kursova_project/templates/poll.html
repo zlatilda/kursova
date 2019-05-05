@@ -85,7 +85,12 @@ $(window).bind('resize',function(){
 {{ comments.count }} comment{{ comments|pluralize }}
     {% for comment in comments %}
         <div>
-            <div style="color: midnightblue;">by <a href="{% url 'kursova:get_user_profile' comment.user.username %}"><b>{{ comment.user}}</b></a> <span style="font-size: 0.75em; float:right;">{{ comment.timestamp }}</span></div>
+            <div style="color: midnightblue;">by <a href="{% url 'kursova:get_user_profile' comment.user.username %}"><b>{{ comment.user}}</b></a>
+                 {% if comment.user.username == user.username %}
+                        <a href="" style="opacity: 0.7; padding-left: 1%;"><img src="{% static 'images/edit.png' %}" style="height: 15px;"></a>
+                        <a href="{% url 'kursova:comment_delete' %}"><img src="{% static 'images/delete.png' %}" style="height: 15px;"></a>
+                    {% endif %}
+                <span style="font-size: 0.75em; float:right;">{{ comment.timestamp }}</span></div>
             <p class="mb-0">{{ comment.content }}</p>
         </div>
         <hr>
