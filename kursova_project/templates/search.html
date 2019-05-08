@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block body %}
+    <div class="container">
+        {% for obj in items %}
+                    {{ obj.check_active_status|default_if_none:'' }}
+			    <a href="{% url 'poll' obj.pk %}" class="list-group-item list-group-item-action">
+				    <div class="row">
+					    <div class="col-12">
+						    <h5>{{ obj.title }}</h5>
+                            <div class="row">
+                                <div class="col-md-3 col-sm-6" id="status">Статус:<label class="_status">{{ obj.status }}</label></div>
+                                <div class="col-md-3 col-sm-6" id="ppl_voted">Проголосувало:<label><b>{{ obj.vote_count }}</b></label></div>
+                                <div class="col-md-3 col-sm-6" id="comment"><img src="{% static 'images/comment.png' %}" id="ico_img"><label>{{obj.get_comment_count}}</label></div>
+							    <div class="col-md-3 col-sm-6"id="date"><label id="from_date">{{ obj.date }}</label><label> --- </label><label id="to_date">{{ obj.final_date }}</label></div>
+						    </div>
+					    </div>
+				    </div>
+			    </a>
+        {% endfor %}
+
+        {% for obj in articles %}
+            {% if obj.status == 'Published' %}
+                <a href="{% url 'kursova:article_detail' obj.pk %}" class="list-group-item list-group-item-action">
+                <div class="row"><h3>{{ obj.title }}</h3></div>
+                <div class="row"><label>{{ obj.created }}</label></div>
+                </a>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}

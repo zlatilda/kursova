@@ -16,6 +16,10 @@
 <title>Головна</title>
 </head>
 <body onload="changeColors()">
+
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/uk_UA/sdk.js#xfbml=1&version=v3.3"></script>
+
 	<nav class="navbar navbar-expand-md navbar-dark bg-dark" style=" position: fixed; width:100%; z-index: 999;">
       <a class="navbar-brand" href="{% url 'kursova:index' %}">Головна</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample03" aria-controls="navbarsExample03" aria-expanded="false" aria-label="Toggle navigation">
@@ -82,7 +86,23 @@
             if(el.textContent == 'Closed'){el.style.color = "#df3a19";}
         }
     }
+
+
+    $(document).ready(function(){
+         var elements = document.getElementsByClassName("post_pic");
+        for(var i=0; i<elements.length; i++)
+        {
+            var el = elements[i];
+            if(el.offsetWidth < el.offsetHeight)
+            {
+                el.className = "portrait"
+            }
+
+        }
+
+    });
 </script>
+
 {% block poll_script %}
 
 {% endblock %}

@@ -78,18 +78,21 @@ def closed(request):
 
 def search(request):
 
-    template = "list.html"
+    template = "search.html"
     hot = Poll.objects.filter(status='Open')
     sort_hot = sorted(hot, key=lambda t: t.get_vote_count())
     sort_hot.reverse()
     query = request.GET.get('q')
     if query:
         items = Poll.objects.filter(Q(title__icontains=query) | Q(description__icontains=query))
+        articles = Post.objects.filter(Q(title__icontains=query) | Q(body__icontains=query))
     else:
         items = Poll.objects.all()
+        articles = Post.objects.all()
     content = {
         'items': items,
         'hot': sort_hot[:5],
+        'articles': articles,
     }
 
     return render(request, template, content)
@@ -180,12 +183,6 @@ def create_profile(request):
     else:
         profile_form = ProfileForm(instance=post)
     return render(request, 'profile.html', {'profile_form': profile_form})
-
-
-"""class DeleteComment(RedirectView):           #_____________________doesn't work___________________
-    def del_comment(request):
-        Comment.objects.filter(id=request.POST.get("id", "")).delete()
-        return redirect('kursova:index')"""
 
 
 def post_list(request):

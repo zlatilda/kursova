@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load i18n %}
-
+{% load staticfiles %}
 {% block poll_script %}
 <script type="text/javascript">
 var vote_url = '{% url "poll_ajax_vote" poll.pk %}';
